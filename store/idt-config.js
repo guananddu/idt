@@ -1,5 +1,33 @@
 /**
- * idt配置文件
+ * idt全局配置文件
+ */
+
+/**
+ * 在项目根目录执行build，需要在根目录建立一个`module.conf`文件
+ * 它是用来配置module模块，如下内容的文件：
+ *   {
+ *       "baseUrl": "src",
+ *       "packages": [ ],
+ *       "combine": {
+ *           "custom/search/main": 1,
+ *           "center/mine/main": 1,
+ *           "custom/position/main": 1,
+ *           "custom/city/main": 1,
+ *           "custom/list/main": 1,
+ *           "custom/mine/main": 1,
+ *           "custom/salary/main": 1,
+ *           "custom/stages/main": 1
+ *       }
+ *   }
+ */
+
+/**
+ * 在根目录构建，可以新建一个`copyright.txt`文本文件来给所有build出来的文件，添加统一的版权
+ * 声明，例如：
+ * 
+ * "! 2014 Lagou Inc. All Rights Reserved"
+ *
+ * 【此文件可以自动生成了，可以在本配置文件中写好配置即可】
  */
 
 var path = require( 'path' );
@@ -16,13 +44,14 @@ var weinreDebugPort = '' || '8080';
 // default localhost 
 var weinreDebugHost = '' || 'localhost'; 
 
-// 执行`build`的时候字符串替换的配置
+// 执行`build`的时候字符串替换的配置，下面此句的意思是，所有的`html`文件中的`#parse( "`
+// 均替换成`#parse( "mobile/tpl/`
 // 【此项视情况而定】
 var replaces = {
     exclude: [ '*' ],
     include: [ '*.html' ],
     replacements: [
-        // { from: /\#parse\( \"/g, to: '#parse( "tpl/' },
+        // { from: /\#parse\( \"/g, to: '#parse( "mobile/tpl/' },
         /**
          * html中build之后需要忽略的代码段，请使用：
          * <!-- idt-build-ignore-start -->
@@ -47,14 +76,14 @@ module.exports = {
     webContent: webContent,
 
     // 模板引擎根目录【只需要修改最后一个参数即可】
-    templates: path.join( webContent, secondary, 'velocity' ),
+    templates: path.join( webContent, secondary, '.' ),
 
-    // 模板引擎切换: smarty / django / velocity / freemarker [ 默认velocity ]
+    // 模板引擎切换: smarty / django / velocity [ 默认velocity ]
     /**
      * velocity模板引擎采用：
      * https://www.npmjs.com/package/velocity
      *
-     * django模板引擎采用'A wrapper of Django's template engine'方式（桥接原理）
+     * django模板引擎采用'A wrapper of Django's template engine'方式
      * 详见：https://www.npmjs.com/package/django
      * 在启用之前请确保python环境已经ready，然后安装django:
      * # pip install -v Django==1.7
@@ -63,22 +92,8 @@ module.exports = {
      *
      * smarty模板引擎采用：
      * https://www.npmjs.com/package/nsmarty
-     *
-     * freemarker模板引擎采用：（桥接原理）
-     * 在启用之前，请确保java环境，并且需要安装：http://fmpp.sourceforge.net/
-     * https://www.npmjs.com/package/freemarker.js#readme
      */
-    tplEngine: 'velocity',
-
-    // 反向代理配置【按需配置】，键名可以随意，只要是每一个的匹配规则
-    reverseProxyMap: {
-
-        tpl: {
-            pattern: /^\/custom\//,
-            replace: '/tpl/custom/'
-        }
-
-    },
+    tplEngine: 'smarty',
 
     // 单路径整体build【String】
     // buildPath: '../outs/outall',
@@ -91,12 +106,22 @@ module.exports = {
 
         // 键名是需要存留的文件，键值是对应的build路径
 
-        '.js': '../outs/outjs',
-        '.css': '../outs/outcss',
-        '.jpg|.jpeg|.gif|.png': '../outs/outimg',
-        '.html|.htm': '../outs/outtemplate',
+        '.js': '../outs/outjs/mobile',
+        '.css': '../outs/outcss/mobile',
+        '.jpg|.jpeg|.gif|.png': '../outs/outimg/mobile',
+        '.html|.htm': '../outs/outtemplate/mobile',
 
         // template的buildpath直接诶通过templates路径指定
+
+    },
+
+    // 反向代理配置【按需配置】，键名可以随意，只要是每一个的匹配规则
+    reverseProxyMap: {
+
+        tpl: {
+            pattern: /^\/custom\//,
+            replace: '/tpl/custom/'
+        }
 
     },
 
@@ -285,15 +310,3 @@ module.exports = {
     }
 
 };
-
-/**
- * 在项目根目录执行build，需要在根目录建立一个`module.conf`文件
- * 它是用来配置module模块，如下内容的文件：
- *   {
- *       "baseUrl": "src",
- *       "packages": [ ],
- *       "combine": {
- *           "abc/def/main": 1
- *       }
- *   }
- */

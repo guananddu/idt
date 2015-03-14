@@ -1,1 +1,0 @@
-I am footer.tpl , the file included from test.tpl
