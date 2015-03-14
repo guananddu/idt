@@ -1,0 +1,30 @@
+#parse( "header.html" )
+</head>
+
+<body>
+
+    <header id="header"></header>
+
+    <div id="content">
+        <div class="info">
+            <span class="text">
+                <em class="left"></em>
+                    嘎嘎嘎
+                <em class="right"></em>
+            </span>
+        </div>
+        #if( $!{asd} )
+            有的asd
+        #end
+    </div>
+
+    #foreach( $list in $!{lists} )
+
+        $!{list.name}
+
+    #end
+
+    #parse( "dep.html" )
+</body>
+
+</html>

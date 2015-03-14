@@ -20,6 +20,12 @@ var djangoEngine = require( 'django' );
  */
 var smartyEngine = require( 'nsmarty' );
 
+/**
+ * freemarker模板引擎
+ * @type {exports}
+ */
+var freemarkerEngine = require( 'freemarker.js' );
+
 module.exports = {
 
     /**
@@ -91,6 +97,32 @@ module.exports = {
                     } );
                     readable.on( 'end', function() {
                         callback( out );
+                    } );
+
+                }
+            },
+
+            freemarker: {
+                render: function ( context, callback ) {
+
+                    var fm = new freemarkerEngine( {
+                        viewRoot: config.templates,
+                        // 查看这里：http://fmpp.sourceforge.net/settings.html#sect6
+                        options: {
+                            sourceEncoding: 'UTF-8',
+                            outputEncoding: 'UTF-8'
+                            /** for fmpp */
+                        }
+                    } );
+
+                    // freemarker会自动拼接viewRoot和tplFile。。
+                    tplFile = tplFile.replace( config.templates, '' );
+
+                    fm.render( tplFile, JSON.stringify( context ), function(err, html, output) {
+                        if ( err ) {
+                            throw err;
+                        }
+                        callback( html );
                     } );
 
                 }

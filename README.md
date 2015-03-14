@@ -1,7 +1,9 @@
-idt
+IDT
 ===
 
-Integration Develop Tool [ 集成开发工具 ]
+Integration Develop Tool
+
+适用于Django Template、PHP Smarty、Java Velocity、Java Freemarker的Integration Develop Tool [ 集成开发工具 ]
 
 ### 安装
 
@@ -37,23 +39,20 @@ Integration Develop Tool [ 集成开发工具 ]
       -V, --version          output the version number
       -c, --config [config]  specify your `idt-config.js`, `idt-config.js` by default
 
-> 在windows下如果出现npm安装相关的错误，则可能是没有在`c:\Users\xxx\AppData\Roaming`下建立`npm`文件夹。
+> 在windows下如果出现npm安装相关的错误，则可能是没有在`c:\Users\xxx\AppData\Roaming`下建立`npm`文件夹；
+> windows下可能还会提示安装visual studio，没办法，只能安装了。
 
-##### 通过`idt install`命令，来安装全局依赖
+##### 安装依赖的工具库
 
-	idt install
-	
-若再次运行此命令的时候出现：
-
-	you have installed `grunt` & `edp`.
-	
-则说明安装成功。
+	(sudo) npm install -g grunt
+	(sudo) npm install -g edp
+	(sudo) npm install -g edp-build
 
 ##### 开发，进入到项目根目录
 
 	idt ceconfig
 	
-此命令，将会在当前`pwd`的目录，新建一个名为`idt-config.js`的idt配置文件，在此配置文件中，可配置`webserver`相关参数及其`build`的相关参数。
+此命令，将会在当前`pwd`的目录，新建一个名为`idt-config.js`的idt配置文件，在此配置文件中，可配置`webserver`相关参数及其`build`的相关参数。这一步其实可以省略了，在运行`ws start`的时候，会自动检测配置文件有没有生成。
 
 ##### 本地静态服务器
 
@@ -64,10 +63,8 @@ Integration Develop Tool [ 集成开发工具 ]
 ##### 部署
 
 	idt build
-	
-现有功能，支持在`WebContent`资源根目录下的整体build，在build之前，根目录下，需要已经生成`idt-config.js`和`module.conf`文件。
 
-`idt-config.js`文件可以通过`idt ws start`来自动生成，`module.conf`则需要仔细阅读生成的`idt-config.js`文件中的说明及其配置。
+> `idt-config.js`文件可以通过`idt ws start`来自动生成，`module.conf`则需要仔细阅读生成的`idt-config.js`文件中的说明及其配置。
 
 `idt build`默认是不压缩的build过程，这是为了便于开发、联调。发布线上之前需要带上`--release`参数：
 
@@ -75,6 +72,6 @@ Integration Develop Tool [ 集成开发工具 ]
 	
 `idt build`同样可以针对某个子目录进行build：
 
-	idt build template/example admin/js --release
+	idt build template/example admin/js (--release)
 	
 > 配置文件`idt-config.js`一定要仔细查看及配置

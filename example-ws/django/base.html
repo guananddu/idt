@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+
+<head>
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+
+    {% for url in urls %}
+        <li>
+            {{ url }}
+        </li>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+
+</body>
+
+</html>
