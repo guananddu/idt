@@ -44,7 +44,7 @@ Integration Develop Tool
 
 ##### 安装依赖的工具库
 
-	(sudo) npm install -g grunt
+	(sudo) npm install -g grunt-cli
 	(sudo) npm install -g edp
 	(sudo) npm install -g edp-build
 
