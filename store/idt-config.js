@@ -47,7 +47,7 @@ module.exports = {
     webContent: webContent,
 
     // 模板引擎根目录【只需要修改最后一个参数即可】
-    templates: path.join( webContent, secondary, 'velocity' ),
+    templates: path.join( webContent, secondary, '.' ),
 
     // 模板引擎切换: smarty / django / velocity / freemarker [ 默认velocity ]
     /**
@@ -68,7 +68,7 @@ module.exports = {
      * 在启用之前，请确保java环境，并且需要安装：http://fmpp.sourceforge.net/
      * https://www.npmjs.com/package/freemarker.js#readme
      */
-    tplEngine: 'velocity',
+    tplEngine: 'django',
 
     // 反向代理配置【按需配置】，键名可以随意，只要是每一个的匹配规则
     reverseProxyMap: {
@@ -79,6 +79,18 @@ module.exports = {
         }
 
     },
+
+    // webserver响应前的替换规则，键名指派了要替换的类型
+    // wsBeforeReplace: {
+
+    //     html: [
+    //         {
+    //             pattern: /template\//g,
+    //             replace: ''
+    //         }
+    //     ]
+
+    // },
 
     // 单路径整体build【String】
     // buildPath: '../outs/outall',
