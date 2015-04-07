@@ -3,6 +3,7 @@
  */
 
 var util = require( 'util' );
+var fs = require( 'fs' );
 
 /**
  * velocity的模板引擎
@@ -35,6 +36,23 @@ module.exports = {
      */
     getEngine : function ( tplFile, config ) {
 
+        var tplFileOld = tplFile;
+        var useTemp = false;
+        if ( config.wsBeforeReplace && config.wsBeforeReplace.html ) {
+            tplFile = tplFile + '.tmp';
+            var fileConOld = fs.readFileSync( tplFileOld).toString();
+            var fileConNew = fileConOld;
+            for ( var i = 0, len = config.wsBeforeReplace.html.length;
+                i < len; i ++ ) {
+                fileConNew = fileConNew.replace(
+                    config.wsBeforeReplace.html[ i ].pattern,
+                    config.wsBeforeReplace.html[ i ].replace
+                );
+            }
+            fs.writeFileSync( tplFile, fileConNew );
+            useTemp = true;
+        }
+
         /**
          * 每一个engine必须要留有一个render方法
          * @type {{velocity: velocityEngine}}
@@ -48,12 +66,21 @@ module.exports = {
                  * @param context
                  */
                 render: function ( context, callback ) {
-                    var renderer = new velocityEngine( {
-                        root: config.templates,
-                        template: tplFile,
-                        cache: false
-                    } );
-                    callback( renderer.render( context ) );
+                    try {
+                        var renderer = new velocityEngine( {
+                            root: config.templates,
+                            template: tplFile,
+                            cache: false
+                        } );
+                        callback( renderer.render( context ) );
+                    }
+                    catch( e ) {
+
+                    }
+                    finally {
+                        useTemp && fs.unlinkSync( tplFile );
+                    }
+
                 }
             },
 
@@ -65,39 +92,56 @@ module.exports = {
                  */
                 render: function ( context, callback ) {
 
-                    djangoEngine.configure( {
-                        template_dirs: config.templates
-                    } );
-                    return djangoEngine
-                        .renderFile( tplFile, context, function ( err, out ) {
-                            if ( err )
-                                throw err;
-                            callback( out );
+                    try {
+                        djangoEngine.configure( {
+                            template_dirs: config.templates
                         } );
+                        return djangoEngine
+                            .renderFile( tplFile, context, function ( err, out ) {
+                                if ( err )
+                                    throw err;
+                                callback( out );
+                                useTemp && fs.unlinkSync( tplFile );
+                            } );
+                    }
+                    catch( e ) {
+                        useTemp && fs.unlinkSync( tplFile );
+                    }
+                    finally { }
+
                 }
             },
 
             smarty: {
                 render: function ( context, callback ) {
 
-                    // 特殊处理
-                    if ( config.templates.lastIndexOf( '/' )
-                        != config.templates.length - 1 ) {
-                        config.templates += '/';
-                    }
-                    smartyEngine.tpl_path = config.templates;
-                    smartyEngine.clearCache();
+                    try {
+                        // 特殊处理
+                        if ( config.templates.lastIndexOf( '/' )
+                            != config.templates.length - 1 ) {
+                            config.templates += '/';
+                        }
+                        smartyEngine.tpl_path = config.templates;
+                        smartyEngine.clearCache();
 
-                    var readable = smartyEngine.assign( tplFile, context );
-                    var out = '';
-                    readable.on( 'data', function( chunk ) {
-                        if ( !chunk )
-                            return;
-                        out += chunk.toString();
-                    } );
-                    readable.on( 'end', function() {
-                        callback( out );
-                    } );
+                        var readable = smartyEngine.assign( tplFile, context );
+                        var out = '';
+                        readable.on( 'data', function( chunk ) {
+                            if ( !chunk )
+                                return;
+                            out += chunk.toString();
+                        } );
+                        readable.on( 'end', function() {
+                            callback( out );
+                            useTemp && fs.unlinkSync( tplFile );
+                        } );
+                    }
+                    catch( e ) {
+                        useTemp && fs.unlinkSync( tplFile );
+                    }
+                    finally {
+
+                    }
 
                 }
             },
@@ -105,25 +149,34 @@ module.exports = {
             freemarker: {
                 render: function ( context, callback ) {
 
-                    var fm = new freemarkerEngine( {
-                        viewRoot: config.templates,
-                        // 查看这里：http://fmpp.sourceforge.net/settings.html#sect6
-                        options: {
-                            sourceEncoding: 'UTF-8',
-                            outputEncoding: 'UTF-8'
-                            /** for fmpp */
-                        }
-                    } );
+                    try {
+                        var fm = new freemarkerEngine( {
+                            viewRoot: config.templates,
+                            // 查看这里：http://fmpp.sourceforge.net/settings.html#sect6
+                            options: {
+                                sourceEncoding: 'UTF-8',
+                                outputEncoding: 'UTF-8'
+                                /** for fmpp */
+                            }
+                        } );
 
-                    // freemarker会自动拼接viewRoot和tplFile。。
-                    tplFile = tplFile.replace( config.templates, '' );
+                        // freemarker会自动拼接viewRoot和tplFile。。
+                        tplFile = tplFile.replace( config.templates, '' );
 
-                    fm.render( tplFile, JSON.stringify( context ), function(err, html, output) {
-                        if ( err ) {
-                            throw err;
-                        }
-                        callback( html );
-                    } );
+                        fm.render( tplFile, JSON.stringify( context ), function(err, html, output) {
+                            if ( err ) {
+                                throw err;
+                            }
+                            callback( html );
+                            useTemp && fs.unlinkSync( tplFile );
+                        } );
+                    }
+                    catch( e ) {
+                        useTemp && fs.unlinkSync( tplFile );
+                    }
+                    finally {
+
+                    }
 
                 }
             }

@@ -50,12 +50,14 @@ program
         clis.ceconfig.call( program, type );
     } );
 
+/*
 program
     .command( 'install' )
     .description( 'install `grunt-cli` and `edp` globally' )
     .action( function () {
         clis.install.call( program );
     } );
+*/
 
 program.parse( process.argv );
 

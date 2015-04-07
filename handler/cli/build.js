@@ -25,6 +25,9 @@ var isDebugRemote;
 
 var isMultiple;
 
+// 只能先这样寻找edp
+var edpPath = path.resolve( __dirname, '../../', 'node_modules', 'edp/bin/edp-cli' );
+
 // 针对子文件夹的build
 var buildMulti = function() {
 
@@ -110,7 +113,9 @@ var runBuildItem = function( targetPath, item ) {
 
     var comm = [
 
-        'edp build ',
+        'node ',
+        edpPath,
+        ' build ',
         '--config=.idt-config ',
         '--stage=',
         isRelease ? 'release' : 'default',
@@ -336,7 +341,9 @@ var buildRoot = function( configfile ) {
     // root的build需要自己先写好idt-config.js文件
     var comm = [
 
-        'edp build ',
+        'node ',
+        edpPath,
+        ' build ',
         configfile ? ( '--config=' + configfile + ' ' ) : '--config=idt-config.js ',
         '--stage=',
         isRelease ? 'release' : 'default',
@@ -354,6 +361,26 @@ var buildRoot = function( configfile ) {
         // del configfile
         configfile && delConfigfile( configfile );
     } );
+
+    /* edp 异步
+    var edp = require( 'edp/lib/cli' );
+    // 拼凑参数
+    var args = [
+        undefined,
+        undefined,
+        'build',
+        configfile ? ( '--config=' + configfile + ' ' ) : '--config=idt-config.js',
+        '--stage=' + ( isRelease ? 'release' : 'default' ),
+        '-f'
+    ];
+
+    edp.parse( null, args );
+
+    // copy something
+    buildRootCopy();
+    // del configfile
+    configfile && delConfigfile( configfile );
+    */
 
 };
 

@@ -31,7 +31,6 @@ Integration Develop Tool
       ws <action>  run webserver: `idt ws start`. <action> now only has `start` option
       build        build your project
       ceconfig     create `idt-config` for your project
-      install      install `grunt-cli` and `edp` globally
 
     Options:
 
@@ -41,12 +40,6 @@ Integration Develop Tool
 
 > 在windows下如果出现npm安装相关的错误，则可能是没有在`c:\Users\xxx\AppData\Roaming`下建立`npm`文件夹；
 > windows下可能还会提示安装visual studio，没办法，只能安装了。
-
-##### 安装依赖的工具库
-
-	(sudo) npm install -g grunt-cli
-	(sudo) npm install -g edp
-	(sudo) npm install -g edp-build
 
 ##### 开发，进入到项目根目录
 

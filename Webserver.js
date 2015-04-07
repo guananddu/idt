@@ -11,6 +11,8 @@ var requester = require( 'request' );
 var idtconfig = require( './config' );
 var utils = require( './common/utils' );
 
+//var beforeMw = require( './handler/ws/beforemw' );
+
 var handlerHtml = require( './handler/ws/html' );
 var handlerAjax = require( './handler/ws/ajax' );
 var handlerLess = require( './handler/ws/less' );
