@@ -1,6 +1,6 @@
 {
   "name": "idtc",
-  "version": "1.1.20",
+  "version": "1.1.21",
   "description": "Integration Develop Tool For Django Template、PHP Smarty、Java Velocity、Java Freemarker",
   "repository": {
     "type": "git",
