@@ -1,5 +1,5 @@
 {
-  "name": "idt",
+  "name": "idtc",
   "version": "1.1.20",
   "description": "Integration Develop Tool For Django Template、PHP Smarty、Java Velocity、Java Freemarker",
   "repository": {
@@ -35,7 +35,6 @@
     "grunt": "^0.4.5",
     "grunt-contrib-connect": "^0.8.0",
     "html2js": "0.0.3",
-    "jsdom": "^1.3.1",
     "less": "^1.7.5",
     "mkdirp": "^0.5.0",
     "nsmarty": "0.0.1",

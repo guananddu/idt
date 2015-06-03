@@ -1,4 +1,4 @@
-IDT
+IDTC【去掉了jsdom的依赖】
 ===
 
 Integration Develop Tool

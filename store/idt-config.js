@@ -7,7 +7,7 @@ var path = require( 'path' );
 // 当前文件夹路径【无需修改】
 var webContent = __dirname;
 
-// web inspector remote 的配置及其使用参看：
+// web inspector remote 的配置及其使用参看：【!!!idtc下不能使用!!!】
 // http://people.apache.org/~pmuellr/weinre-docs/latest/Running.html
 // debug username, 关闭调试: `off`，如果设置此项，则开启调试，不设置即为`off`关闭
 var wsWeinreDebug = '' || 'off';

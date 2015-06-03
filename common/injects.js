@@ -2,13 +2,14 @@
  * 响应注入
  */
 
-var jsdom = require( 'jsdom' );
-var serializeDocument = require( 'jsdom' ).serializeDocument;
+// var jsdom = require( 'jsdom' );
+// var serializeDocument = require( 'jsdom' ).serializeDocument;
 
 module.exports = {
 
     weinre: function( config, output, callback ) {
 
+        /*
         var script = 'http://' 
             + config.weinredebughost + ':' 
             + config.weinredebugport + '/target/target-script-min.js#' 
@@ -25,6 +26,7 @@ module.exports = {
                 callback( serializeDocument( doc ) );
             }
         );
+        */
 
     }
 
