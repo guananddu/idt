@@ -35,6 +35,7 @@ var onCreateServer = function( server, connect, options ) {
     utils.clog.nor( 'WebServer Pid: ' + process.pid );
     utils.clog.nor( 'Running on port: ' + options.port );
 
+    /* 【idtc去掉socket的支持】
     // socket 支持
     var io = require( 'socket.io' ).listen( server );
     io.sockets.on( 'connection', function( socket ) {
@@ -42,6 +43,7 @@ var onCreateServer = function( server, connect, options ) {
         // do something with socket
 
     } );
+    */
 
     // write stop 
     // kill -9 $pid

@@ -7,7 +7,7 @@
     "url": "https://github.com/guananddu/idt.git"
   },
   "bin": {
-    "idt": "./bin/idt-cli"
+    "idtc": "./bin/idt-cli"
   },
   "keywords": [
     "develop",
